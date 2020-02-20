@@ -1,4 +1,3 @@
-//let books = []
 fetch("https://api.myjson.com/bins/zyv02")
     .then(response => {
         console.log(response);
@@ -6,8 +5,6 @@ fetch("https://api.myjson.com/bins/zyv02")
     })
     .then(data => {
         let books = data.books;
-        console.log(books);
-        console.log(books[3].title);
         createBook(books);
         createEvent(books);
         // searchButton(books);
@@ -17,6 +14,30 @@ fetch("https://api.myjson.com/bins/zyv02")
         console.log(error);
     });
 
+function createEvent(books) {
+    let input = document.getElementById("search-input");
+    input.addEventListener("keyup", function () {
+        searchButton(books);
+    });
+}
+
+function searchButton(books) {
+    let input, filter;
+    input = document.getElementById("search-input");
+    filter = input.value.toUpperCase();
+
+    let filteredBooks = [];
+
+    for (var i = 0; i < books.length; i++) {
+        if (books[i].title.toUpperCase().includes(filter)) {
+            filteredBooks.push(books[i]);
+            // } else if (books[i].description.toUpperCase().includes(filter)) {
+            //     console.log(books[i].description)
+            //     filteredBooks.push(books[i]);
+        }
+    }
+    createBook(filteredBooks);
+}
 
 function createBook(arrBooks) {
     const flipCardContainer = document.getElementById("card-container")
@@ -35,7 +56,7 @@ function createBook(arrBooks) {
 
         let bookTitleTag = document.createElement("h6")
         let bookDescriptionTag = document.createElement("h6")
-        let bookLanguageTag = document.createElement("h6")
+        // let bookLanguageTag = document.createElement("h6")
 
         let moreInfoButton = document.createElement("button")
         //let detailLink = document.createElement("a");
@@ -53,7 +74,7 @@ function createBook(arrBooks) {
 
         bookTitleTag.setAttribute("class", "book-tag");
         bookDescriptionTag.setAttribute("class", "book-tag");
-        bookLanguageTag.setAttribute("class", "book-tag");
+        // bookLanguageTag.setAttribute("class", "book-tag");
 
         moreInfoButton.setAttribute("class", "image-link btn btn-light more-info-button")
 
@@ -65,11 +86,11 @@ function createBook(arrBooks) {
         bookCover.src = arrBooks[i].cover;
         bookTitle.innerHTML = arrBooks[i].title;
         bookDescription.innerHTML = arrBooks[i].description;
-        bookLanguage.innerHTML = arrBooks[i].language;
+        bookLanguage.innerHTML = "Language: " + arrBooks[i].language.toUpperCase();
 
         bookTitleTag.innerHTML = "Title: ";
         bookDescriptionTag.innerHTML = "Description: ";
-        bookLanguageTag.innerHTML = "Language: ";
+        // bookLanguageTag.innerHTML = "Language: ";
 
         moreInfoButton.innerHTML = "More info";
         moreInfoButton.setAttribute("id", arrBooks[i].detail)
@@ -78,15 +99,26 @@ function createBook(arrBooks) {
             let modal = document.getElementById("popup-modal")
             let popupDiv = document.createElement("div")
             let popupImg = document.createElement("img")
-            let closeButton = document.createElement("a")
+            // let closeButton = document.createElement("a")
             console.log(modal)
             popupImg.setAttribute("src", event.target.id)
             popupImg.setAttribute("class", "popup-image")
-            closeButton.setAttribute("class", "fas fa-window-close close-button")
+            // closeButton.setAttribute("class", "fas fa-window-close close-button")
+
+            let spanButton = document.createElement("span");
+            spanButton.setAttribute("class", "close-button fas fa-window-close");
+            spanButton.innerHTML = "&times;&nbsp";
+
+            spanButton.onclick = function () {
+                popupDiv.innerHTML = ""
+                popupDiv.style.display = "none";
+            };
+            popupDiv.appendChild(spanButton);
+
             popupDiv.setAttribute("class", "popup-div")
             popupDiv.appendChild(popupImg)
             modal.appendChild(popupDiv)
-            popupDiv.appendChild(closeButton)
+            // popupDiv.appendChild(closeButton)
         })
         //detailLink.href = arrBooks[i].detail;
         // detailLink.target = "popup";
@@ -102,66 +134,10 @@ function createBook(arrBooks) {
         flipCardBack.appendChild(bookTitle);
         flipCardBack.appendChild(bookDescriptionTag);
         flipCardBack.appendChild(bookDescription);
-        flipCardBack.appendChild(bookLanguageTag);
+        // flipCardBack.appendChild(bookLanguageTag);
         flipCardBack.appendChild(bookLanguage);
         flipCardBack.appendChild(moreInfoButton);
         // flipCardBack.appendChild(detailLink)
         // detailLink.appendChild(detailImage)
     }
-}
-
-
-// function searchBar() {
-//     // Declare variables
-//     var searchItem;
-//     input = books[i]
-//     filter = input.value.toUpperCase();
-
-//     // Loop through all list items, and hide those who don't match the search query
-//     for (i = 0; i < li.length; i++) {
-//         a = li[i].getElementsByTagName("a")[0];
-//         txtValue = a.textContent || a.innerText;
-//         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-//             li[i].style.display = "";
-//         } else {
-//             li[i].style.display = "none";
-//         }
-//     }
-// } <
-// /script >
-
-
-// function go() {
-//     var name = document.getElementById('search').value;
-//     var result = _.find(data.bookDescription, {
-//         'title': name
-//     });
-//     if (!result)
-//         window.alert('Nothing found');
-//     else
-//         window.alert('Go to ' + result.url);
-// }
-
-
-function createEvent(books) {
-    let input = document.getElementById("search-input");
-    input.addEventListener("keyup", function () {
-        searchButton(books);
-    });
-}
-
-function searchButton(books) {
-    let input, filter;
-    input = document.getElementById("search-input");
-    filter = input.value.toUpperCase();
-
-    let filteredBooks = [];
-
-    for (var i = 0; i < books.length; i++) {
-        if (books[i].title.toUpperCase().includes(filter)) {
-            console.log(books[i].title)
-            filteredBooks.push(books[i]);
-        }
-    }
-    createBook(filteredBooks);
 }
