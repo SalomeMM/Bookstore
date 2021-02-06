@@ -1,6 +1,6 @@
 # Bookstore
 
-Bookstore displaying a selection of books with detail popup and search bar. Used: HTML + CSS + Bootstrap + JavaScript + AJAX + JSON
+Bookstore displaying a selection of books with detail popup and search bar. Applied: HTML + CSS + Bootstrap + JavaScript + AJAX + JSON
 Deployed: https://naughty-lumiere-8969db.netlify.app/
 
 Applied:
